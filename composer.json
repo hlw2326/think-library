@@ -13,7 +13,7 @@
         "email": "1608626143@qq.com"
     },
     "require": {
-        "php": ">=7.1",
+        "php": "^8.2",
         "ext-gd": "*",
         "ext-curl": "*",
         "ext-json": "*",
