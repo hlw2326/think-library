@@ -1,0 +1,62 @@
+{
+    "name": "hlw2326/think-library",
+    "license": "MIT",
+    "homepage": "https://thinkadmin.top",
+    "description": "Core library and common services for HlwAdmin",
+    "authors": [
+        {
+            "name": "hlw2326",
+            "email": "1608626143@qq.com"
+        }
+    ],
+    "support": {
+        "email": "1608626143@qq.com"
+    },
+    "require": {
+        "php": ">=7.1",
+        "ext-gd": "*",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-zlib": "*",
+        "ext-iconv": "*",
+        "ext-openssl": "*",
+        "ext-mbstring": "*",
+        "symfony/process": "^5.4|^6.0|*",
+        "topthink/think-orm": "^2.0|^3.0",
+        "topthink/framework": "^6.0|^8.0|*",
+        "topthink/think-migration": "^3.0|*",
+        "zoujingli/wechat-developer": "*",
+        "zoujingli/weopen-developer": "*"
+    },
+    "conflict": {
+        "topthink/think-helper": "3.1.12"
+    },
+    "autoload": {
+        "files": [
+            "src/common.php"
+        ],
+        "psr-4": {
+            "think\\admin\\": "src"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5.52 || ^9.6.33 || ^10.5.62 || ^11.5.50 || ^12.5.8 || ^13.3"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "think\\admin\\tests\\": "tests"
+        }
+    },
+    "extra": {
+        "think": {
+            "services": [
+                "think\\admin\\facade\\Library"
+            ]
+        }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "config": {
+        "sort-packages": true
+    }
+}

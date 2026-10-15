@@ -1,0 +1,103 @@
+<?php
+
+use think\admin\extend\PhinxExtend;
+use think\admin\extend\PhinxBackup;
+use think\admin\service\ProcessService;
+use think\helper\Str;
+use think\migration\Migrator;
+
+@set_time_limit(0);
+@ini_set('memory_limit', '-1');
+
+/**
+ * 数据安装包
+ * @class __CLASS__
+ */
+class __CLASS__ extends Migrator
+{
+    /**
+     * 数据库初始化
+     * @return void
+     */
+    public function change()
+    {
+        $this->inserData();
+        $this->insertConf();
+        $this->insertUser();
+        $this->insertMenu();
+    }
+
+    /**
+     * 安装扩展数据
+     * @return void
+     */
+    private function inserData()
+    {
+        // 待解析处理数据
+        $tables = __DATA__;
+        // 解析并写入扩展数据
+        if (count($tables) > 0) {
+            foreach ($tables as $table => $path) {
+                $name = Str::studly($table);
+                ProcessService::message(" -- Starting write {$table} table ..." . PHP_EOL);
+                $ls = PhinxBackup::restore($this->table($table), __DIR__ . DIRECTORY_SEPARATOR . $path, function ($ls) use ($name) {
+                    ProcessService::message(" -- -- {$name}:{$ls}", 1);
+                });
+                ProcessService::message(" -- Finished write {$table} table, Total {$ls} rows.", 2);
+            }
+        }
+    }
+
+    /**
+     * 初始化配置参数
+     * @return void
+     */
+    private function insertConf()
+    {
+        $table = $this->table('system_config');
+        if (!PhinxBackup::isEmpty($table)) return;
+        $table->insert([
+            ['type' => 'base', 'name' => 'app_name', 'value' => 'ThinkAdmin'],
+            ['type' => 'base', 'name' => 'app_version', 'value' => 'v6'],
+            ['type' => 'base', 'name' => 'editor', 'value' => 'ckeditor5'],
+            ['type' => 'base', 'name' => 'login_name', 'value' => '系统管理'],
+            ['type' => 'base', 'name' => 'site_copy', 'value' => '©版权所有 2014-' . date('Y') . ' ThinkAdmin'],
+            ['type' => 'base', 'name' => 'site_icon', 'value' => 'https://thinkadmin.top/static/img/logo.png'],
+            ['type' => 'base', 'name' => 'site_name', 'value' => 'ThinkAdmin'],
+            ['type' => 'base', 'name' => 'site_theme', 'value' => 'default'],
+            ['type' => 'wechat', 'name' => 'type', 'value' => 'api'],
+            ['type' => 'storage', 'name' => 'type', 'value' => 'local'],
+            ['type' => 'storage', 'name' => 'allow_exts', 'value' => 'doc,gif,ico,jpg,mp3,mp4,p12,pem,png,zip,rar,xls,xlsx'],
+        ])->saveData();
+    }
+
+    /**
+     * 初始化用户数据
+     * @return void
+     */
+    private function insertUser()
+    {
+        $table = $this->table('system_user');
+        if (!PhinxBackup::isEmpty($table)) return;
+        $table->insert([
+            'id'       => '10000',
+            'username' => 'admin',
+            'nickname' => '超级管理员',
+            'password' => '21232f297a57a5a743894a0e4a801fc3',
+            'headimg'  => 'https://thinkadmin.top/static/img/head.png',
+        ])->saveData();
+    }
+
+    /**
+     * 初始化系统菜单
+     * @return void
+     */
+    private function insertMenu()
+    {
+        $table = $this->table('system_menu');
+        if (PhinxBackup::isEmpty($table)) {
+            // 解析并初始化菜单数据
+            PhinxExtend::write2menu(__MENU__, [], $table);
+        }
+    }
+}
