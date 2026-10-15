@@ -40,7 +40,7 @@ class Package extends Command
         $this->addOption('force', 'f', Option::VALUE_NONE, 'Force All Update');
         $this->addOption('table', 't', Option::VALUE_OPTIONAL, 'Package Tables Scheme', '');
         $this->addOption('backup', 'b', Option::VALUE_OPTIONAL, 'Package Tables Backup', '');
-        $this->setDescription('Generate System Install Package for ThinkAdmin');
+        $this->setDescription('Generate System Install Package for HlwAdmin');
     }
 
     /**

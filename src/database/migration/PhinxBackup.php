@@ -20,9 +20,9 @@ use Phinx\Db\Table;
  */
 class PhinxBackup
 {
-    private const PREFIX = 'ThinkAdminBackup:1:';
+    private const PREFIX = 'HlwAdminBackup:1:';
 
-    private const TYPED_PREFIX = 'ThinkAdminBackup:2:';
+    private const TYPED_PREFIX = 'HlwAdminBackup:2:';
 
     public static function isEmpty(Table $table): bool
     {

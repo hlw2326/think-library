@@ -33,7 +33,7 @@ class Sysmenu extends Command
     public function configure()
     {
         $this->setName('xadmin:sysmenu');
-        $this->setDescription('Clean and Reset System Menu Data for ThinkAdmin');
+        $this->setDescription('Clean and Reset System Menu Data for HlwAdmin');
     }
 
     /**

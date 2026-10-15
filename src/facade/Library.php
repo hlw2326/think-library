@@ -50,7 +50,7 @@ class Library extends Service
         // 静态应用赋值
         static::$sapp = $this->app;
 
-        // 注册 ThinkAdmin 指令
+        // 注册 HlwAdmin 指令
         $this->commands([
             Queue::class,
             Package::class,

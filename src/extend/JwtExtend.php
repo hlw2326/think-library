@@ -203,7 +203,7 @@ class JwtExtend
             return $jwtkey;
         } catch (\Exception $exception) {
             trace_file($exception);
-            return 'thinkadmin';
+            return 'hlwadmin';
         }
     }
 

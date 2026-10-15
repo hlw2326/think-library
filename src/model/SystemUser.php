@@ -97,10 +97,10 @@ class SystemUser extends Model
     {
         if (empty($value)) {
             try {
-                $host = sysconf('base.site_host|raw') ?: 'https://v6.thinkadmin.top';
+                $host = sysconf('base.site_host|raw') ?: 'https://v6.hlwadmin.top';
                 return "{$host}/static/theme/img/headimg.png";
             } catch (\Exception $exception) {
-                return 'https://v6.thinkadmin.top/static/theme/img/headimg.png';
+                return 'https://v6.hlwadmin.top/static/theme/img/headimg.png';
             }
         } else {
             return $value;
