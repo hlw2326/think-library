@@ -1,5 +1,7 @@
 # ThinkLibrary for HlwAdmin
 
+> 备注：本项目是通过 ThinkAdmin 魔改的。
+
 **ThinkLibrary** 是 **HlwAdmin** 面向 **ThinkPHP 6 & 8** 的核心封装库，提供控制器、模型、服务、队列、存储、配置、HTTP、JWT 和常用数据处理能力。
 
 ## 业务功能特性
@@ -138,7 +140,6 @@
 * 高级特性：全面支持微信小程序码（无限量 Scene 模式、普通限量 Path 模式、通用二维码模式）、QQ 小程序码，内置二进制 MIME 自动嗅探、Storage 存储落盘及 `dataUri()` 网页直接嵌入。
 
 
-> 备注：本项目基于 ThinkAdmin 进行魔改。
 
 ## 数据库安装包兼容性
 
