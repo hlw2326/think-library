@@ -138,11 +138,7 @@
 * 高级特性：全面支持微信小程序码（无限量 Scene 模式、普通限量 Path 模式、通用二维码模式）、QQ 小程序码，内置二进制 MIME 自动嗅探、Storage 存储落盘及 `dataUri()` 网页直接嵌入。
 
 
-## 版权说明
-
-**ThinkLibrary** 遵循 **MIT** 开源协议发布，并免费提供使用。
-
-版权所有 Copyright © 2014-2026 by HlwAdmin All rights reserved。
+> 备注：本项目基于 ThinkAdmin 进行魔改。
 
 ## 数据库安装包兼容性
 
