@@ -37,10 +37,10 @@ return [
         'key'  => env('CRYPT_HMAC_KEY', ''),
         'algo' => env('CRYPT_HMAC_ALGO', 'sha256'),
     ],
-    // RSA 密钥配置：CRYPT_RSA_*_KEY_B64 使用 Base64 编码后的完整 PEM 文本
+    // RSA 密钥配置：CRYPT_RSA_PUBLIC / CRYPT_RSA_PRIVATE 使用 Base64 编码后的完整 PEM 文本
     'rsa'  => [
-        'public_key'  => $decode('CRYPT_RSA_PUBLIC_KEY_B64'),
-        'private_key' => $decode('CRYPT_RSA_PRIVATE_KEY_B64'),
+        'public_key'  => $decode('CRYPT_RSA_PUBLIC'),
+        'private_key' => $decode('CRYPT_RSA_PRIVATE'),
         'passphrase'  => env('CRYPT_RSA_PASSPHRASE', ''),
         'openssl_cnf' => env('CRYPT_OPENSSL_CNF', ''),
     ],

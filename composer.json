@@ -55,8 +55,7 @@
         },
         "plugin": {
             "init": {
-                "stc/config/crypt.php": "config/crypt.php",
-                "stc/.env.crypt.example": ".env.crypt.example"
+                "stc/config/crypt.php": "config/crypt.php"
             },
             "event": {
                 "src/install/CryptInstall.php": "think\\admin\\install\\CryptInstall"

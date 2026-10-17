@@ -21,33 +21,36 @@ namespace think\admin\install;
 class CryptInstall
 {
     /**
-     * 首次安装时生成独立加密环境配置.
-     * 已存在的配置文件绝不覆盖，防止更新或重复安装造成密钥轮换。
+     * 首次安装或补全独立加密环境配置.
+     * 已存在的非空配置绝不覆盖，防止更新或重复安装造成密钥轮换。
      */
     public static function onInstall(): void
     {
         $file = getcwd() . DIRECTORY_SEPARATOR . '.env.crypt';
-        if (is_file($file)) {
+        $exists = is_file($file);
+        $envs = $exists ? (parse_ini_file($file, false, INI_SCANNER_RAW) ?: []) : [];
+        $needRsa = empty($envs['CRYPT_RSA_PUBLIC']) || empty($envs['CRYPT_RSA_PRIVATE']);
+        if (!$needRsa && !empty($envs['CRYPT_AES_KEY']) && !empty($envs['CRYPT_SM4_KEY']) && !empty($envs['CRYPT_HMAC_KEY']) && !empty($envs['CRYPT_API_SIGN_SECRET'])) {
             return;
         }
 
-        $keys = static::generateRsaKeys();
+        $keys = $needRsa ? static::generateRsaKeys() : [];
         $data = [
-            '# 此文件由 think-library 安装器首次生成，包含敏感密钥，禁止提交版本库。',
+            '# 此文件由 think-library 安装器生成，包含敏感密钥，禁止提交版本库。',
             '# RSA PEM 已转换为单行 Base64，config/crypt.php 会在运行时自动解码。',
-            'CRYPT_TYPE=aes',
-            'CRYPT_AES_KEY=' . base64_encode(random_bytes(32)),
-            'CRYPT_AES_CIPHER=aes-256-gcm',
-            'CRYPT_SM4_KEY=' . base64_encode(random_bytes(32)),
-            'CRYPT_HMAC_KEY=' . base64_encode(random_bytes(32)),
-            'CRYPT_HMAC_ALGO=sha256',
-            'CRYPT_RSA_PUBLIC_KEY_B64=' . base64_encode($keys['public_key']),
-            'CRYPT_RSA_PRIVATE_KEY_B64=' . base64_encode($keys['private_key']),
-            'CRYPT_RSA_PASSPHRASE=',
-            'CRYPT_OPENSSL_CNF=',
-            'CRYPT_API_SIGN_SECRET=' . bin2hex(random_bytes(32)),
-            'CRYPT_API_TIME_TOLERANCE=60000',
-            'CRYPT_API_NONCE_EXPIRE=120',
+            'CRYPT_TYPE=' . ($envs['CRYPT_TYPE'] ?? 'aes'),
+            'CRYPT_AES_KEY=' . (($envs['CRYPT_AES_KEY'] ?? '') ?: base64_encode(random_bytes(32))),
+            'CRYPT_AES_CIPHER=' . ($envs['CRYPT_AES_CIPHER'] ?? 'aes-256-gcm'),
+            'CRYPT_SM4_KEY=' . (($envs['CRYPT_SM4_KEY'] ?? '') ?: base64_encode(random_bytes(32))),
+            'CRYPT_HMAC_KEY=' . (($envs['CRYPT_HMAC_KEY'] ?? '') ?: base64_encode(random_bytes(32))),
+            'CRYPT_HMAC_ALGO=' . ($envs['CRYPT_HMAC_ALGO'] ?? 'sha256'),
+            'CRYPT_RSA_PUBLIC=' . (($envs['CRYPT_RSA_PUBLIC'] ?? '') ?: base64_encode($keys['public_key'])),
+            'CRYPT_RSA_PRIVATE=' . (($envs['CRYPT_RSA_PRIVATE'] ?? '') ?: base64_encode($keys['private_key'])),
+            'CRYPT_RSA_PASSPHRASE=' . ($envs['CRYPT_RSA_PASSPHRASE'] ?? ''),
+            'CRYPT_OPENSSL_CNF=' . ($envs['CRYPT_OPENSSL_CNF'] ?? ''),
+            'CRYPT_API_SIGN_SECRET=' . (($envs['CRYPT_API_SIGN_SECRET'] ?? '') ?: bin2hex(random_bytes(32))),
+            'CRYPT_API_TIME_TOLERANCE=' . ($envs['CRYPT_API_TIME_TOLERANCE'] ?? '60000'),
+            'CRYPT_API_NONCE_EXPIRE=' . ($envs['CRYPT_API_NONCE_EXPIRE'] ?? '120'),
             '',
         ];
 
