@@ -63,10 +63,7 @@ class CryptInstall
             '# RSA 公私钥，PEM 内容均使用 Base64 单行编码保存。',
             'CRYPT_RSA_PUBLIC=' . $rsaPublic,
             'CRYPT_RSA_PRIVATE=' . $rsaPrivate,
-            '# 私钥密码和 OpenSSL 配置路径；未使用时可留空。',
-            'CRYPT_RSA_PASSPHRASE=' . ($envs['CRYPT_RSA_PASSPHRASE'] ?? ''),
-            'CRYPT_OPENSSL_CNF=' . ($envs['CRYPT_OPENSSL_CNF'] ?? ''),
-            '',
+
             '# API 请求签名密钥、允许的时间戳误差（毫秒）及随机数有效期（秒）。',
             'CRYPT_API_SIGN_SECRET=' . (($envs['CRYPT_API_SIGN_SECRET'] ?? '') ?: bin2hex(random_bytes(32))),
             'CRYPT_API_TIME_TOLERANCE=' . ($envs['CRYPT_API_TIME_TOLERANCE'] ?? '60000'),
