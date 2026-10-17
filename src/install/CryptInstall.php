@@ -34,20 +34,40 @@ class CryptInstall
             return;
         }
 
-        $keys = $needRsa ? static::generateRsaKeys() : [];
+        $rsaPublic = $envs['CRYPT_RSA_PUBLIC'] ?? '';
+        $rsaPrivate = $envs['CRYPT_RSA_PRIVATE'] ?? '';
+        if ($needRsa) {
+            $keys = static::generateRsaKeys();
+            $rsaPublic = $rsaPublic ?: base64_encode($keys['public_key']);
+            $rsaPrivate = $rsaPrivate ?: base64_encode($keys['private_key']);
+        }
+
         $data = [
             '# 此文件由 think-library 安装器生成，包含敏感密钥，禁止提交版本库。',
             '# RSA PEM 已转换为单行 Base64，config/crypt.php 会在运行时自动解码。',
+            '',
+            '# 默认加密算法：aes、sm4、rsa 或 hmac。',
             'CRYPT_TYPE=' . ($envs['CRYPT_TYPE'] ?? 'aes'),
+            '',
+            '# AES 对称加密密钥及算法。密钥为 Base64 编码的 32 字节随机值。',
             'CRYPT_AES_KEY=' . (($envs['CRYPT_AES_KEY'] ?? '') ?: base64_encode(random_bytes(32))),
             'CRYPT_AES_CIPHER=' . ($envs['CRYPT_AES_CIPHER'] ?? 'aes-256-gcm'),
+            '',
+            '# SM4 对称加密密钥，使用 Base64 编码保存。',
             'CRYPT_SM4_KEY=' . (($envs['CRYPT_SM4_KEY'] ?? '') ?: base64_encode(random_bytes(32))),
+            '',
+            '# HMAC 签名密钥及摘要算法。',
             'CRYPT_HMAC_KEY=' . (($envs['CRYPT_HMAC_KEY'] ?? '') ?: base64_encode(random_bytes(32))),
             'CRYPT_HMAC_ALGO=' . ($envs['CRYPT_HMAC_ALGO'] ?? 'sha256'),
-            'CRYPT_RSA_PUBLIC=' . (($envs['CRYPT_RSA_PUBLIC'] ?? '') ?: base64_encode($keys['public_key'])),
-            'CRYPT_RSA_PRIVATE=' . (($envs['CRYPT_RSA_PRIVATE'] ?? '') ?: base64_encode($keys['private_key'])),
+            '',
+            '# RSA 公私钥，PEM 内容均使用 Base64 单行编码保存。',
+            'CRYPT_RSA_PUBLIC=' . $rsaPublic,
+            'CRYPT_RSA_PRIVATE=' . $rsaPrivate,
+            '# 私钥密码和 OpenSSL 配置路径；未使用时可留空。',
             'CRYPT_RSA_PASSPHRASE=' . ($envs['CRYPT_RSA_PASSPHRASE'] ?? ''),
             'CRYPT_OPENSSL_CNF=' . ($envs['CRYPT_OPENSSL_CNF'] ?? ''),
+            '',
+            '# API 请求签名密钥、允许的时间戳误差（毫秒）及随机数有效期（秒）。',
             'CRYPT_API_SIGN_SECRET=' . (($envs['CRYPT_API_SIGN_SECRET'] ?? '') ?: bin2hex(random_bytes(32))),
             'CRYPT_API_TIME_TOLERANCE=' . ($envs['CRYPT_API_TIME_TOLERANCE'] ?? '60000'),
             'CRYPT_API_NONCE_EXPIRE=' . ($envs['CRYPT_API_NONCE_EXPIRE'] ?? '120'),
