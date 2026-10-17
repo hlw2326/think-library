@@ -1,5 +1,6 @@
 {
     "name": "hlw2326/think-library",
+    "type": "think-admin-plugin",
     "license": "MIT",
     "homepage": "https://hlwadmin.top",
     "description": "Core library and common services for HlwAdmin",
