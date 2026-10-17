@@ -52,6 +52,15 @@
             "services": [
                 "think\\admin\\facade\\Library"
             ]
+        },
+        "plugin": {
+            "init": {
+                "stc/config/crypt.php": "config/crypt.php",
+                "stc/.env.crypt.example": ".env.crypt.example"
+            },
+            "event": {
+                "src/install/CryptInstall.php": "think\\admin\\install\\CryptInstall"
+            }
         }
     },
     "prefer-stable": true,

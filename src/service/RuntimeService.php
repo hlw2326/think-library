@@ -65,6 +65,9 @@ class RuntimeService
         // 初始化运行环境
         Library::$sapp = $app ?: Container::getInstance()->make(App::class);
         Library::$sapp->bind('think\Route', Route::class);
+        // 加载独立加密环境配置（PEM 使用 Base64 编码保存）
+        $cryptEnvFile = Library::$sapp->getRootPath() . '.env.crypt';
+        is_file($cryptEnvFile) && Library::$sapp->env->load($cryptEnvFile);
         Library::$sapp->bind('think\route\Url', Url::class);
         // 初始化运行配置位置
         self::$envFile = syspath('runtime/.env');

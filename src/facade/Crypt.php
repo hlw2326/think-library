@@ -47,7 +47,7 @@ abstract class Crypt
      */
     public static function instance(?string $name = null): CryptInterface
     {
-        $name = strtolower(strval($name ?: sysconf('crypt.type|raw') ?: 'aes'));
+        $name = strtolower(strval($name ?: config('crypt.type', 'aes')));
         if (!isset(static::types()[$name])) {
             throw new Exception("Crypt driver [{$name}] does not exist.");
         }

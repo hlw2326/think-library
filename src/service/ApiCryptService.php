@@ -36,12 +36,12 @@ class ApiCryptService extends Service
      */
     protected function initialize(): void
     {
-        $this->tolerance = (int) $this->app->config->get('api.time_tolerance', 60000);
-        $this->ttl = (int) $this->app->config->get('api.nonce_expire', 120);
-        $this->secret = (string) $this->app->config->get('api.sign_secret', 'hlw_api_secret_key_2026');
-        $this->priv = (string) $this->app->config->get('api.rsa_private_key', '');
-        $this->pub = (string) $this->app->config->get('api.rsa_public_key', '');
-        $this->cipher = (string) $this->app->config->get('api.aes_cipher', 'aes-256-gcm');
+        $this->tolerance = (int) $this->app->config->get('crypt.api.time_tolerance', 60000);
+        $this->ttl = (int) $this->app->config->get('crypt.api.nonce_expire', 120);
+        $this->secret = (string) $this->app->config->get('crypt.api.sign_secret', '');
+        $this->priv = (string) $this->app->config->get('crypt.rsa.private_key', '');
+        $this->pub = (string) $this->app->config->get('crypt.rsa.public_key', '');
+        $this->cipher = (string) $this->app->config->get('crypt.aes.cipher', 'aes-256-gcm');
     }
 
     /**
@@ -75,7 +75,7 @@ class ApiCryptService extends Service
             mkdir($dir, 0755, true);
         }
 
-        $cnf = $this->app->config->get('api.openssl_cnf');
+        $cnf = $this->app->config->get('crypt.rsa.openssl_cnf');
         $keys = Crypt::rsa()->generate(2048, is_string($cnf) ? $cnf : null);
 
         file_put_contents($priv, $keys['private_key']);

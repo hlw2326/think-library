@@ -141,7 +141,7 @@ class Crypt extends Command
         }
 
         $this->output->writeln("正在生成 {$bits} 位 RSA 密钥对，请稍候...");
-        $cnf = $this->app->config->get('api.openssl_cnf');
+        $cnf = $this->app->config->get('crypt.rsa.openssl_cnf');
         $keys = CryptEngine::rsa()->generate($bits, is_string($cnf) ? $cnf : null);
 
         file_put_contents($priv, $keys['private_key']);
